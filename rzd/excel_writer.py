@@ -1,15 +1,15 @@
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color, NamedStyle
 from openpyxl import Workbook
 
 
 class excel_writer(object):
-    bottom_border = Border(bottom = Side(style = 'medium'))
-    bottom_right_border = Border(bottom = Side(style = 'medium'), right  = Side(style = 'medium'))
-    left_right_border = Border(right  = Side(style = 'medium'), left = Side(style = 'medium'))
+    #bottom_border = Border(bottom = Side(style = 'medium'))
+    #bottom_right_border = Border(bottom = Side(style = 'medium'), right  = Side(style = 'medium'))
+    #left_right_border = Border(right  = Side(style = 'medium'), left = Side(style = 'medium'))
     full_border = Border(bottom = Side(style = 'medium'), left = Side(style = 'medium'), right  = Side(style = 'medium'), top = Side(style = 'medium'))
-    greyFill = PatternFill(start_color = 'C8C8C7', end_color='C8C8C7', fill_type='solid')
-    redFill = PatternFill(start_color= 'E21A1A', end_color = 'E21A1A', fill_type= 'solid')
-    whiteFont = Font(color = 'FFFFFF')
+    grey_fill = PatternFill(start_color = 'C8C8C7', end_color='C8C8C7', fill_type='solid')
+    red_fill = PatternFill(start_color= 'E21A1A', end_color = 'E21A1A', fill_type= 'solid')
+    white_font = Font(color = 'FFFFFF')
 
     start_posx = 3
     start_posy = 5
@@ -18,8 +18,15 @@ class excel_writer(object):
     def write(self, routes, param_keys, old, new):
         self.wb = Workbook()
 
-        #highlight = NamedStyle(name="")
-        #wb.add_named_style(highlight)
+        header_style = NamedStyle(name="header")
+        header_style.border = self.full_border
+        header_style.fill = self.red_fill
+        header_style.font = self.white_font
+        self.wb.add_named_style(header_style)
+
+        regular_style = NamedStyle(name = "regular")
+        regular_style.fill = self.grey_fill
+        self.wb.add_named_style(regular_style)
 
         ws = self.wb.active
         posx, posy = self.start_posx, self.start_posy
@@ -50,18 +57,17 @@ class excel_writer(object):
 
                 train = old_train
                 train_count += 1
-
-                ws.cell(row = posy, column = posx - 1, value = route[0] + '->' + route[1] + ' ' + route[2])
-                ws.cell(row = posy, column = posx, value = 'pass.rzd.ru')
-                ws.cell(row = posy, column = posx + 1, value = 'rzd.ru')
-                ws.cell(row = posy, column = posx + 2, value = 'совпадение')
-                ws.cell(row = posy + 1, column = posx, value = train)
-                ws.cell(row = posy + 1, column = posx + 1, value = train)
-                ws.cell(row = posy + 1, column = posx + 2, value = train)
+                for i, value in enumerate([route[0] + '->' + route[1] + ' ' + route[2], 'pass.rzd.ru', 'rzd.ru', 'совпадение']) : 
+                    ws.cell(row = posy, column = posx - 1 + i, value = value).style = 'header'
+                for i in range(2):
+                    ws.cell(row = posy + 1, column = posx + i, value = train).style = 'regular'
+                # вывод train_id, которые всегда совпадают
+                ws.cell(row = posy + 1, column = posx - 1, value = 'train_id').style = 'header'
+                ws.cell(row = posy + 1, column = posx + 2, value = '+').style = 'regular'
                 for i, param_key in enumerate(param_keys):
-                    ws.cell(row = posy + 1 + i, column = posx - 1, value = param_key)
-                    ws.cell(row = posy + 1 + i, column = posx, value = old[route_key]["route_data"][train][param_key])
-                    ws.cell(row = posy + 1 + i, column = posx + 1, value = new[route_key]["route_data"][train][param_key])
+                    ws.cell(row = posy + 2 + i, column = posx - 1, value = param_key).style = 'header'
+                    ws.cell(row = posy + 2 + i, column = posx, value = old[route_key]["route_data"][train][param_key]).style = 'regular'
+                    ws.cell(row = posy + 2 + i, column = posx + 1, value = new[route_key]["route_data"][train][param_key]).style = 'regular'
                     state = '+'
                     if old[route_key]["route_data"][train][param_key] != new[route_key]["route_data"][train][param_key]:
                         # жестко привязано к этим названиям, иначе малейшее отличие будет отмечаться ошибкой
@@ -71,14 +77,14 @@ class excel_writer(object):
                         else:
                             state = '-'
                             error_count += 1
-                    ws.cell(row = posy + 1 + i, column = posx + 2, value = state)
+                    ws.cell(row = posy + 2 + i, column = posx + 2, value = state).style = 'regular'
                 posx += 5
             posx = self.start_posx
-            posy += len(param_keys) + 2
+            posy += len(param_keys) + 3
         
-        ws.cell(column = 1, row = 1, value = f"Количество поездов - {train_count}")
-        ws.cell(column = 1, row = 1 + 1, value = f"Количество неточностей - {inaccuracy_count}")
-        ws.cell(column = 1, row = 1 + 2, value = f"Количество ошибок - {error_count}")
+        ws.cell(column = 1, row = 1, value = f"Количество поездов - {train_count}").style = 'header'
+        ws.cell(column = 1, row = 1 + 1, value = f"Количество неточностей - {inaccuracy_count}").style = 'header'
+        ws.cell(column = 1, row = 1 + 2, value = f"Количество ошибок - {error_count}").style = 'header'
         
 
         # width auto_size
