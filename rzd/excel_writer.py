@@ -14,6 +14,7 @@ class excel_writer(object):
     start_posx = 3
     start_posy = 5
 
+    # слишком большая функция
     def write(self, routes, param_keys, old, new):
         self.wb = Workbook()
 
@@ -28,12 +29,11 @@ class excel_writer(object):
         error_count = 0
 
         for route in routes:
-
             route_key = route[0] + ' ' + route[1] + ' ' + route[2]
             for old_train, new_train in zip(old[route_key]['trains_order'], new[route_key]['trains_order']):
                 # Сочи -> Москва 21.21.2021 на новом сайте отсутствует 1 маршрут
                 # вставка поезда с None значениями, если он отсутствует
-                # выглядит ужасно, но я незнаю, как сделать иначе
+                # выглядит ужасно, но вроде работает
                 if old_train != new_train:
                     old_trains = old[route_key]['trains_order']
                     new_trains = new[route_key]['trains_order']

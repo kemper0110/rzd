@@ -11,7 +11,7 @@ with open("routes.json") as f:
     routes = json.load(f)
 
 
-
+# закомментируйте, если нужно отладить вывод в таблицу без запуска браузер
 driver = webdriver.Chrome(r'webdrivers\chromedriver.exe')
 driver.implicitly_wait(4)   # при медленном соединении следует увеличить
 
@@ -33,18 +33,24 @@ for src, dest, date in routes:
 
 with open('old_data.json', 'w') as f:
     json.dump(old_data, f, indent = 4)
-
+# до сюда
 
 param_keys = []
 with open("rzd.ru.json") as f:
     param_keys = [key for key in json.load(f)]
 param_keys.sort()   # лишь вариант порядка вывода параметров
 
-with open('new_data.json', 'r') as f:
-    new_data = json.load(f)
-with open('old_data.json', 'r') as f:
-    old_data = json.load(f)
 
+# раскомментируйте, если нужно отладить вывод в таблицу без запуска браузер
+#with open('new_data.json', 'r') as f:
+#    new_data = json.load(f)
+#with open('old_data.json', 'r') as f:
+#    old_data = json.load(f)
+
+
+# // при переносе кода оформления не осталось, 
+# но стили лежат в этом классе
+# при наличии времени и желания можно их вернуть
 excel_writer().write(routes, param_keys, old_data, new_data).save()
 
 

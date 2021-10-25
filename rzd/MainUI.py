@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtWidgets
 from ui import Ui_MainWindow
 import json
-import  subprocess
+
 
 
 
@@ -42,9 +42,18 @@ class RzdPars(QtWidgets.QMainWindow):
             return
 
     def jsonSave(self):
+        
         with open('routes.json', 'w') as json_data:
             json.dump(self.data, json_data, indent=2)
+        import sys
+        import  subprocess
+        from subprocess import check_call
+        import os
+        #os.system('python rzd.py')        
+        #originalDir = os.path.dirname(full_path)
+        #check_call([sys.executable or 'python', script_path], cwd=os.path.dirname(script_path))
         subprocess.Popen(['python3', 'rzd.py'])
+        #subprocess.Popen([sys.executable,'-c', 'rzd.py'])
 
 
 app = QtWidgets.QApplication([])
