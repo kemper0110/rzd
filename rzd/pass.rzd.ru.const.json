@@ -1,0 +1,12 @@
+{
+  "card": "/html/body/div[1]/div[2]/div[4]/div/div[2]/div[1]/div[3]/div",
+
+  "from_textbox": "//*[@id=\"name0\"]",
+  "to_textbox": "//*[@id=\"name1\"]",
+  "to_date": "//*[@id=\"date0\"]",
+
+  "find_button": "//*[@id=\"Submit1\"]",
+  "checkbox": "//*[@id=\"NoSeats\"]",
+
+  "train_id": ".//div/div/div[1]/div[1]/div[2]/span[2]/span"
+}

@@ -1,0 +1,10 @@
+{
+  "time_from": ".//div/div/div[1]/div[1]/div[4]/div[1]/div/span[2]/span[1]",
+  "date_from": ".//div/div/div[1]/div[1]/div[4]/div[1]/div/span[2]/span[3]",
+
+  "time_to": ".//div/div/div[1]/div[1]/div[4]/div[3]/div/span[2]/span[1]",
+  "date_to": ".//div/div/div[1]/div[1]/div[4]/div[3]/div/span[2]/span[3]",
+
+  "station_from": ".//div/div/div[1]/div[1]/div[5]/div[1]/div",
+  "station_to":   ".//div/div/div[1]/div[1]/div[5]/div[2]/div"
+}

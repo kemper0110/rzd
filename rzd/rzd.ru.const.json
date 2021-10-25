@@ -1,0 +1,11 @@
+{
+  "card": "/html/body/rzd-app/div/div/rzd-search-results/div/div/div/rzd-base-result-theme/div/div/div[2]/rzd-search-results-card-list/div/rzd-search-results-card-railway-flat-card",
+  
+  "from_textbox": "//*[@id=\"direction-from\"]",
+  "to_textbox": "//*[@id=\"direction-to\"]",
+  "to_date": "//*[@id=\"datepicker-from\"]",
+  
+  "find_button": "//*[@id=\"rzd-search-widget\"]/div/div[2]/a",
+
+  "train_id": ".//div/div/div//div[1]/span[1]/strong[1]"
+}
